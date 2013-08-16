@@ -5,21 +5,23 @@ namespace MosaicImage
 {
     internal class AvailableImage
     {
+        public int TargetBlockSize { get; set; }
         private Bitmap _bitmap;
 
-        public AvailableImage(string imageFile, int blockSize)
+        public AvailableImage(string imageFile, int targetBlockSize)
         {
+            TargetBlockSize = targetBlockSize;
             using (var original = new Bitmap(imageFile))
             {
-                int newWidth = blockSize;
-                int newHeight = blockSize;
+                int newWidth = targetBlockSize;
+                int newHeight = targetBlockSize;
                 if (original.Width > original.Height)
-                    newWidth = blockSize*original.Width/original.Height;
+                    newWidth = targetBlockSize*original.Width/original.Height;
                 else
-                    newHeight = blockSize*original.Height/original.Width;
+                    newHeight = targetBlockSize*original.Height/original.Width;
                 _bitmap = new Bitmap(original, newWidth, newHeight);
             }
-            Average = ImageUtils.GetAverageColor(ImageUtils.GetPixels(0, 0, blockSize).Select(p => _bitmap.GetPixel(p.X, p.Y)).ToArray());
+            Average = ImageUtils.GetAverageColor(ImageUtils.GetPixels(0, 0, targetBlockSize).Select(p => _bitmap.GetPixel(p.X, p.Y)).ToArray());
         }
 
         public Color Average { get; private set; }

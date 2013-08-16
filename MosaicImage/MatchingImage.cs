@@ -36,13 +36,22 @@ namespace MosaicImage
 
         public Color ReadPixel(Pixel pixel)
         {
-            return AdjustBrightness(AvailableImage.GetAverageAtPixel(pixel.Subtract(_pixelBlock.GetPixels().First())));
+            return AdjustBrightness(AvailableImage.GetAverageAtPixel(pixel.Subtract(_pixelBlock.GetPixels(AvailableImage.TargetBlockSize).First())));
         }
 
         private Color AdjustBrightness(Color color)
         {
-            int b = (int)GetBrightnessDifference();
-            return Color.FromArgb(ColorValue(color.R + b), ColorValue(color.G + b), ColorValue(color.B + b));
+            var b = GetColorDifference();
+            return Color.FromArgb(ColorValue(color.R + b.Item1), ColorValue(color.G + b.Item2), ColorValue(color.B + b.Item3));
+        }
+
+        private Tuple<int, int, int> GetColorDifference()
+        {
+            return Tuple.Create(
+                _pixelBlock.OriginalAverageColor.R - AvailableImage.Average.R,
+                _pixelBlock.OriginalAverageColor.G - AvailableImage.Average.G,
+                _pixelBlock.OriginalAverageColor.B - AvailableImage.Average.B
+                );
         }
 
         private int ColorValue(int p0)

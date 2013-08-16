@@ -8,15 +8,13 @@ namespace MosaicImage
     {
         private readonly int _x;
         private readonly int _y;
-        private readonly int _blockSize;
 
-        public PixelBlock(Bitmap bitmap, int x, int y, int blockSize)
+        public PixelBlock(Bitmap sourceBitmap, int x, int y, int blockSize)
         {
-            _x = x * blockSize;
-            _y = y * blockSize;
-            _blockSize = blockSize;
+            _x = x;
+            _y = y;
 
-            CalculateOriginalAverageColor(bitmap);
+            CalculateOriginalAverageColor(sourceBitmap, blockSize);
         }
 
         public override string ToString()
@@ -24,16 +22,16 @@ namespace MosaicImage
             return _x + "," + _y;
         }
 
-        private void CalculateOriginalAverageColor(Bitmap bitmap)
+        private void CalculateOriginalAverageColor(Bitmap bitmap, int blockSize)
         {
-            OriginalAverageColor = ImageUtils.GetAverageColor(GetPixels().Select(p => bitmap.GetPixel(p.X, p.Y)).ToArray());
+            OriginalAverageColor = ImageUtils.GetAverageColor(GetPixels(blockSize).Select(p => bitmap.GetPixel(p.X, p.Y)).ToArray());
         }
 
         public Color OriginalAverageColor { get; set; }
 
-        public IEnumerable<Pixel> GetPixels()
+        public IEnumerable<Pixel> GetPixels(int blockSize)
         {
-            return ImageUtils.GetPixels(_x, _y, _blockSize);
+            return ImageUtils.GetPixels(_x * blockSize, _y * blockSize, blockSize);
         }
     }
 }
