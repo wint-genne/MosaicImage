@@ -4,29 +4,28 @@ using System.Drawing;
 
 namespace MosaicImage
 {
-    internal class ImageBlocks
+    public class SourceImage
     {
-        public List<PixelBlock> Blocks { get; set; }
+        public List<SourcePixelBlock> Blocks { get; set; }
 
         public int NumBlocksX { get; private set; }
         public int NumBlocksY { get; private set; }
 
         public int BlockSize { get; set; }
 
-        public ImageBlocks(string sourceImage, int blockSize)
+        public SourceImage(int sourceBlockSize, Bitmap sourceBitmap)
         {
-            var sourceBitmap = new Bitmap(sourceImage);
             Console.WriteLine("Reading blocks...");
-            NumBlocksX = (int)Math.Floor((double)sourceBitmap.Width / blockSize);
-            NumBlocksY = (int)Math.Floor((double)sourceBitmap.Height / blockSize);
-            BlockSize = blockSize;
-            Blocks = new List<PixelBlock>();
+            NumBlocksX = (int)Math.Floor((double)sourceBitmap.Width / sourceBlockSize);
+            NumBlocksY = (int)Math.Floor((double)sourceBitmap.Height / sourceBlockSize);
+            BlockSize = sourceBlockSize;
+            Blocks = new List<SourcePixelBlock>();
             for (int x = 0; x < NumBlocksX; x++)
             {
                 Console.Write("\r" + (x * 100 / NumBlocksX) + "%    ");
                 for (int y = 0; y < NumBlocksY; y++)
                 {
-                    Blocks.Add(new PixelBlock(sourceBitmap, x, y, blockSize));
+                    Blocks.Add(new SourcePixelBlock(sourceBitmap, x, y, sourceBlockSize));
                 }
             }
         }

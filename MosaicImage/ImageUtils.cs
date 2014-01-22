@@ -9,7 +9,7 @@ namespace MosaicImage
         public static Color GetAverageColor(Color[] colors)
         {
             var red = (int)colors.Average(c => (double)c.R);
-            var green = (int)colors.Average(c => (double)c.B);
+            var green = (int)colors.Average(c => (double)c.G);
             var blue = (int)colors.Average(c => (double)c.B);
             return Color.FromArgb(red, green, blue);
         }

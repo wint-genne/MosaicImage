@@ -4,12 +4,12 @@ using System.Linq;
 
 namespace MosaicImage
 {
-    internal class PixelBlock
+    public class SourcePixelBlock
     {
         private readonly int _x;
         private readonly int _y;
 
-        public PixelBlock(Bitmap sourceBitmap, int x, int y, int blockSize)
+        public SourcePixelBlock(Bitmap sourceBitmap, int x, int y, int blockSize)
         {
             _x = x;
             _y = y;
@@ -24,7 +24,8 @@ namespace MosaicImage
 
         private void CalculateOriginalAverageColor(Bitmap bitmap, int blockSize)
         {
-            OriginalAverageColor = ImageUtils.GetAverageColor(GetPixels(blockSize).Select(p => bitmap.GetPixel(p.X, p.Y)).ToArray());
+            var allColors = GetPixels(blockSize).Select(p => bitmap.GetPixel(p.X, p.Y)).ToArray();
+            OriginalAverageColor = ImageUtils.GetAverageColor(allColors);
         }
 
         public Color OriginalAverageColor { get; set; }

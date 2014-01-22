@@ -3,15 +3,15 @@ using System.Linq;
 
 namespace MosaicImage
 {
-    internal class AvailableImage
+    public class AvailableImage
     {
         public int TargetBlockSize { get; set; }
         private Bitmap _bitmap;
 
-        public AvailableImage(string imageFile, int targetBlockSize)
+        public AvailableImage(int targetBlockSize, Bitmap bitmap)
         {
             TargetBlockSize = targetBlockSize;
-            using (var original = new Bitmap(imageFile))
+            using (var original = bitmap)
             {
                 int newWidth = targetBlockSize;
                 int newHeight = targetBlockSize;
@@ -21,10 +21,10 @@ namespace MosaicImage
                     newHeight = targetBlockSize*original.Height/original.Width;
                 _bitmap = new Bitmap(original, newWidth, newHeight);
             }
-            Average = ImageUtils.GetAverageColor(ImageUtils.GetPixels(0, 0, targetBlockSize).Select(p => _bitmap.GetPixel(p.X, p.Y)).ToArray());
+            AverageColor = ImageUtils.GetAverageColor(ImageUtils.GetPixels(0, 0, targetBlockSize).Select(p => _bitmap.GetPixel(p.X, p.Y)).ToArray());
         }
 
-        public Color Average { get; private set; }
+        public Color AverageColor { get; private set; }
 
         public Color GetAverageAtPixel(Pixel pixel)
         {
