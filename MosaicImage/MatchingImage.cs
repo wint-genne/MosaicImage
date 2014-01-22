@@ -8,6 +8,9 @@ namespace MosaicImage
     {
         public AvailableImage AvailableImage { get; set; }
         private PixelBlock _pixelBlock;
+        private Tuple<int, int, int> _colorDifference;
+
+        public float Difference { get; private set; }
 
         public MatchingImage(AvailableImage availableImage, PixelBlock pixelBlock)
         {
@@ -15,6 +18,12 @@ namespace MosaicImage
             _pixelBlock = pixelBlock;
 
             CalculateDifference(pixelBlock);
+            _colorDifference = Tuple.Create(
+                _pixelBlock.OriginalAverageColor.R - AvailableImage.Average.R,
+                _pixelBlock.OriginalAverageColor.G - AvailableImage.Average.G,
+                _pixelBlock.OriginalAverageColor.B - AvailableImage.Average.B
+                );
+            _colorDifference = Tuple.Create(0, 0, 0);
         }
 
         private void CalculateDifference(PixelBlock pixelBlock)
@@ -32,26 +41,14 @@ namespace MosaicImage
             return Math.Abs(a.R - b.R) + Math.Abs(a.G - b.G) + Math.Abs(a.B - b.B);
         }
 
-        public float Difference { get; private set; }
-
         public Color ReadPixel(Pixel pixel)
         {
-            return AdjustBrightness(AvailableImage.GetAverageAtPixel(pixel.Subtract(_pixelBlock.GetPixels(AvailableImage.TargetBlockSize).First())));
+            return AdjustColor(AvailableImage.GetAverageAtPixel(pixel.Subtract(_pixelBlock.GetPixels(AvailableImage.TargetBlockSize).First())));
         }
 
-        private Color AdjustBrightness(Color color)
+        private Color AdjustColor(Color color)
         {
-            var b = GetColorDifference();
-            return Color.FromArgb(ColorValue(color.R + b.Item1), ColorValue(color.G + b.Item2), ColorValue(color.B + b.Item3));
-        }
-
-        private Tuple<int, int, int> GetColorDifference()
-        {
-            return Tuple.Create(
-                _pixelBlock.OriginalAverageColor.R - AvailableImage.Average.R,
-                _pixelBlock.OriginalAverageColor.G - AvailableImage.Average.G,
-                _pixelBlock.OriginalAverageColor.B - AvailableImage.Average.B
-                );
+            return Color.FromArgb(ColorValue(color.R + _colorDifference.Item1), ColorValue(color.G + _colorDifference.Item2), ColorValue(color.B + _colorDifference.Item3));
         }
 
         private int ColorValue(int p0)

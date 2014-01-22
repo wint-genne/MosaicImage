@@ -14,9 +14,9 @@ namespace MosaicImage
     {
         static void Main(string[] args)
         {
-            var sourceImage = args.Length > 0 ? args[0] : @"c:\temp\mosaic\src\IMG_1220.jpg";
+            var sourceImage = args.Length > 0 ? args[0] : @"c:\temp\mosaic\src\IMG_9446.jpg";
             int blockSize = args.Length > 1 ? int.Parse(args[1]) : 10;
-            int blockTargetSize = 40;
+            int blockTargetSize = 10;
             string availableImagesDir = args.Length > 2 ? args[2] : @"c:\temp\mosaic\siri";
             var blocks = ReadBlocks(sourceImage, blockSize, blockTargetSize);
             var images = ReadAvailableImages(availableImagesDir, blockTargetSize).ToArray();
@@ -34,7 +34,7 @@ namespace MosaicImage
                 if (availableImages.Count < 10) availableImages = images.ToList();
                 UpdateBlock(targetImage, pixelBlock, matchingImage);
             }
-            targetImage.Save("c:\\temp\\siri_mosaic.png");
+            targetImage.Save("c:\\temp\\siri_mosaic5.png");
         }
 
         private static void UpdateBlock(Bitmap targetImage, PixelBlock pixelBlock, MatchingImage matchingImage)
