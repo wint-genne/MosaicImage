@@ -24,23 +24,23 @@ namespace MosaicImage
             Console.WriteLine("Creating...");
             var current = 0;
             var total = sourceImage.Blocks.Count();
-            foreach (var pixelBlock in sourceImage.Blocks)
+            foreach (var sourcePixelBlock in sourceImage.Blocks)
             {
                 current++;
                 int percentage = current*100/total;
                 Console.Write("\r" + (percentage + "%").PadRight(10));
-                var matchingImage = FindBestMatchingImage(pixelBlock, availableImagesCopy);
+                var matchingImage = FindBestMatchingImage(sourcePixelBlock, availableImagesCopy);
                 if (availableImagesCopy.Count < 10) availableImagesCopy = availableImages.ToList();
-                UpdateBlock(targetImage, pixelBlock, matchingImage);
+                UpdateBlock(targetImage, sourcePixelBlock, matchingImage.GetTargetPixelGenerator());
             }
             return targetImage;
         }
 
-        private static void UpdateBlock(Bitmap targetImage, SourcePixelBlock sourcePixelBlock, AvailableImageMatch availableImageMatch)
+        private static void UpdateBlock(Bitmap targetImage, SourcePixelBlock sourcePixelBlock, TargetPixelGenerator targetPixelGenerator)
         {
-            foreach (var pixel in sourcePixelBlock.GetPixels(availableImageMatch.AvailableImage.TargetBlockSize))
+            foreach (var pixel in sourcePixelBlock.GetPixels(targetPixelGenerator.TargetBlockSize))
             {
-                targetImage.SetPixel(pixel.X, pixel.Y, availableImageMatch.ReadPixel(pixel));
+                targetImage.SetPixel(pixel.X, pixel.Y, targetPixelGenerator.GetTargetPixel(pixel));
             }
         }
 

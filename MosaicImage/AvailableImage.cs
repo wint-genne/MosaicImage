@@ -26,7 +26,7 @@ namespace MosaicImage
 
         public Color AverageColor { get; private set; }
 
-        public Color GetAverageAtPixel(Pixel pixel)
+        public Color GetPixel(Pixel pixel)
         {
             return _bitmap.GetPixel(pixel.X, pixel.Y);
         }

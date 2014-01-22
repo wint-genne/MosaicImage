@@ -9,6 +9,8 @@ namespace MosaicImage
         private readonly int _x;
         private readonly int _y;
 
+        public Color OriginalAverageColor { get; private set; }
+
         public SourcePixelBlock(Bitmap sourceBitmap, int x, int y, int blockSize)
         {
             _x = x;
@@ -27,8 +29,6 @@ namespace MosaicImage
             var allColors = GetPixels(blockSize).Select(p => bitmap.GetPixel(p.X, p.Y)).ToArray();
             OriginalAverageColor = ImageUtils.GetAverageColor(allColors);
         }
-
-        public Color OriginalAverageColor { get; set; }
 
         public IEnumerable<Pixel> GetPixels(int blockSize)
         {
