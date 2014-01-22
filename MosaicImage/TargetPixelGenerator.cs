@@ -27,14 +27,9 @@ namespace MosaicImage
             var sourceAverageColor = _sourcePixelBlock.OriginalAverageColor;
             var availableAverageColor = _availableImage.AverageColor;
             return Color.FromArgb(
-                ColorValue(color.R + sourceAverageColor.R - availableAverageColor.R),
-                ColorValue(color.G + sourceAverageColor.G - availableAverageColor.G),
-                ColorValue(color.B + sourceAverageColor.B - availableAverageColor.B));
-        }
-
-        private static int ColorValue(int val)
-        {
-            return Math.Min(255, Math.Max(0, val));
+                ImageUtils.ColorValue(color.R + sourceAverageColor.R - availableAverageColor.R),
+                ImageUtils.ColorValue(color.G + sourceAverageColor.G - availableAverageColor.G),
+                ImageUtils.ColorValue(color.B + sourceAverageColor.B - availableAverageColor.B));
         }
     }
 }

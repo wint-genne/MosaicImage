@@ -51,7 +51,8 @@ namespace MosaicImage
 
         private static AvailableImageMatch FindBestMatchingImage(SourcePixelBlock sourcePixelBlock, ICollection<AvailableImage> availableImages)
         {
-            var findBestMatchingImage = availableImages.Select(i => new AvailableImageMatch(i, sourcePixelBlock)).OrderBy(m => m.Difference).First();
+            var availableImageMatches = availableImages.Select(i => new AvailableImageMatch(i, sourcePixelBlock));
+            var findBestMatchingImage = RandomUtils.GetRandomLowest(availableImageMatches, m => m.Difference);
             availableImages.Remove(findBestMatchingImage.AvailableImage);
             return findBestMatchingImage;
         }

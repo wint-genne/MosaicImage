@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="AvailableImage.cs" />
     <Compile Include="Generator.cs" />
+    <Compile Include="RandomUtils.cs" />
     <Compile Include="SourceImage.cs" />
     <Compile Include="ImageUtils.cs" />
     <Compile Include="AvailableImageMatch.cs" />
