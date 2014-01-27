@@ -4,16 +4,15 @@ using System.Linq;
 
 namespace MosaicImage
 {
-    internal class RandomUtils
+    public class RandomUtils
     {
-        public static T GetRandomLowest<T>(IEnumerable<T> enumerable, Func<T, double> valFunc)
+        public static T GetRandomLowest<T>(IEnumerable<T> enumerable, Func<T, double> valFunc, Random random, int min)
         {
-            return GetRandomHighest(enumerable, i => 1/valFunc(i));
+            return GetRandomHighest(enumerable, i => 1/(valFunc(i)-min+1), random);
         }
 
-        private static T GetRandomHighest<T>(IEnumerable<T> enumerable, Func<T, double> valFunc)
+        private static T GetRandomHighest<T>(IEnumerable<T> enumerable, Func<T, double> valFunc, Random rand)
         {
-            var rand = new Random();
             var array = enumerable as T[] ?? enumerable.ToArray();
             var total = array.Sum(valFunc);
             var randInt = rand.NextDouble() * total;

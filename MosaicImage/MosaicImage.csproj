@@ -44,11 +44,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AvailableImage.cs" />
+    <Compile Include="AvailableImageFinder.cs" />
     <Compile Include="Generator.cs" />
     <Compile Include="RandomUtils.cs" />
     <Compile Include="SourceImage.cs" />
     <Compile Include="ImageUtils.cs" />
-    <Compile Include="AvailableImageMatch.cs" />
     <Compile Include="Pixel.cs" />
     <Compile Include="SourcePixelBlock.cs" />
     <Compile Include="Program.cs" />

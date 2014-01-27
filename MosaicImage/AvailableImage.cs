@@ -24,7 +24,7 @@ namespace MosaicImage
             AverageColor = ImageUtils.GetAverageColor(ImageUtils.GetPixels(0, 0, targetBlockSize).Select(p => _bitmap.GetPixel(p.X, p.Y)).ToArray());
         }
 
-        public Color AverageColor { get; private set; }
+        public Color AverageColor;
 
         public Color GetPixel(Pixel pixel)
         {

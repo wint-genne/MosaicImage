@@ -26,11 +26,6 @@ namespace MosaicImage
             }
         }
 
-        public static int CompareColors(Color a, Color b)
-        {
-            return Math.Abs(a.R - b.R) + Math.Abs(a.G - b.G) + Math.Abs(a.B - b.B);
-        }
-
         public static int ColorValue(int val)
         {
             return Math.Min(255, Math.Max(0, val));

@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -7,13 +9,22 @@ namespace MosaicImage
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            var sourceImage = args.Length > 0 ? args[0] : @"c:\temp\mosaic\src\IMG_9446.jpg";
-            int blockSize = args.Length > 1 ? int.Parse(args[1]) : 10;
-            int blockTargetSize = 10;
-            string availableImagesDir = args.Length > 2 ? args[2] : @"c:\temp\mosaic\siri";
-            Generator.GenerateMosaicImage(sourceImage, blockSize, blockTargetSize, availableImagesDir);
+            const int sourceBlockSize = 10;
+            int targetBlockSize = 100;
+            const string availableImagesDir = @"c:\temp\mosaic\siri";
+
+            var availableFiles = Generator.ReadAvailableImages(availableImagesDir, targetBlockSize).ToArray();
+
+            string sourceDir = @"c:\temp\mosaic\src";
+            foreach (var sourceImageFile in Directory.GetFiles(sourceDir, "*.jpg"))
+            {
+                string sourceImage = Path.Combine(sourceDir, sourceImageFile);
+                var targetImagePath = Path.ChangeExtension(sourceImage, sourceBlockSize + "-" + targetBlockSize + "_target.jpg");
+                if (!sourceImageFile.Contains("_target") && !File.Exists(targetImagePath))
+                    Generator.GenerateMosaicImage(sourceImage, sourceBlockSize, targetBlockSize, targetImagePath, availableFiles);
+            }
         }
     }
 }
